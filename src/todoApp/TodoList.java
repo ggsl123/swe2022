@@ -1,6 +1,9 @@
 package todoApp;
 
+import sun.text.resources.et.CollationData_et;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -9,10 +12,13 @@ import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 
 public class TodoList {
+    public enum TypeOfSort {NAME_ORDER,NAME_REVERSE_ORDER, DATE_ORDER, DATE_REVERSE_ORDER,
+        CREATED_ORDER, CREATED_REVERSE_ORDER, DONE_ORDER, DONE_REVERSE_ORDER}
+
     private String name;
     private TodoTheme theme;
     private Boolean hideDone;
-    private TodoApp.TypeOfSort typeOfSort;
+    private TypeOfSort typeOfSort;
     private ArrayList<TodoTask> tasks;
 
     Scanner in = new Scanner(System.in);
@@ -21,7 +27,7 @@ public class TodoList {
         this.name = in.nextLine();
         this.theme = new TodoTheme();
         this.hideDone = false;
-        this.typeOfSort = TodoApp.TypeOfSort.CREATED_ORDER;
+        this.typeOfSort = TypeOfSort.CREATED_ORDER;
         this.tasks = new ArrayList<>();
     }
 
@@ -30,14 +36,14 @@ public class TodoList {
         String what = in.nextLine();
         this.name = what;
     }
-    public void setTheme(TodoTheme t){
-        this.theme.setColor();
-        this.theme.setImageIcon();
+    public void setTheme(TodoTheme.ThemeColor col){
+        this.theme.setColor(col);
+        //this.theme.setImageIcon();
     }
     public void setHideDone(){
         this.hideDone = !this.hideDone;
     }
-    public void setTypeOfSort(TodoApp.TypeOfSort t) {
+    public void setTypeOfSort(TypeOfSort t) {
         this.typeOfSort = t;
         this.sortTask();
     }
@@ -53,26 +59,31 @@ public class TodoList {
                 tasks.sort(comparing(TodoTask::getName));
             }
             case NAME_REVERSE_ORDER:{
-                tasks.sort((TodoTask x,TodoTask y) -> y.getName().compareTo(x.getName()));
+                tasks.sort(comparing(TodoTask::getName));
+                Collections.reverse(tasks);
             }
             case DATE_ORDER: {
                 tasks.sort(comparing(TodoTask::getDate,
                         nullsFirst(naturalOrder())));
             }
-            case DATE_REVERSE_ORDER:{//null 예외 잡는법..
-                tasks.sort((TodoTask x,TodoTask y) -> y.getDate().compareTo(x.getDate()));
+            case DATE_REVERSE_ORDER:{
+                tasks.sort(comparing(TodoTask::getDate,
+                        nullsFirst(naturalOrder())));
+                Collections.reverse(tasks);
             }
             case CREATED_ORDER:{
                 tasks.sort(comparing(TodoTask::getCreated));
             }
             case CREATED_REVERSE_ORDER: {
-                tasks.sort((TodoTask x, TodoTask y) -> y.getCreated().compareTo(x.getCreated()));
+                tasks.sort(comparing(TodoTask::getCreated));
+                Collections.reverse(tasks);
             }
             case DONE_ORDER: {
                 tasks.sort(comparing(TodoTask::getDone));
             }
             case DONE_REVERSE_ORDER: {
-                tasks.sort((TodoTask x, TodoTask y) -> Boolean.compare(x.getDone(), y.getDone()));
+                tasks.sort(comparing(TodoTask::getDone));
+                Collections.reverse(tasks);
             }
         }
     }
@@ -129,8 +140,7 @@ public class TodoList {
             this.name = what;
             this.done = false;
             this.created = new Date();
-            this.date = null;
-            this.alarm = null;
+
         }
         public void del(){
             TodoList.this.tasks.remove(this);

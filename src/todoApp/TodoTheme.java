@@ -5,36 +5,39 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class TodoTheme {
+    public enum ThemeColor {BLUE, PINK, PURPLE, GREEN, SKY};
+    public enum ThemeImage {MOUNTAIN, TOWER, BUS, PLANE, HOUSE, SOLID}
+
     private Color color;
     private ImageIcon imageIcon;
 
     public TodoTheme(){
-        color = Color.BLUE;
+        this.setColor(ThemeColor.BLUE);
+        //this.setImageIcon(ThemeImage.SOLID);
         imageIcon = new ImageIcon();
     }
-    static Scanner in = new Scanner(System.in);
-    public void setColor(){
-        System.out.println("Type of Color");
-        System.out.println("1. BLUE");
-        System.out.println("2. PINK");
-        System.out.println("3. PURPLE");
-        System.out.println("4. GREEN");
-        System.out.println("5. SKY");
-        System.out.print("Type number of color type: ");
-        int what = in.nextInt();
-        switch(what){
-            case 1 : this.color = Color.BLUE;
-            case 2 : this.color = Color.PINK;
-            case 3 : this.color = new Color(98,27,155);
-            case 4 : this.color = Color.GREEN;
-            case 5 : this.color = Color.CYAN;
+    public void setColor(ThemeColor col){
+        switch(col){
+            case BLUE : this.color = Color.BLUE;
+            case PINK : this.color = Color.PINK;
+            case PURPLE : this.color = new Color(98,27,155);
+            case GREEN : this.color = Color.GREEN;
+            case SKY : this.color = Color.CYAN;
         }
 
     }
-    public void setImageIcon(){
-
+    /*public void setImageIcon(ThemeImage img){
+        switch(img){
+            case MOUNTAIN : this.imageIcon =
+            case TOWER : this.imageIcon =
+            case BUS : this.imageIcon =
+            case PLANE : this.imageIcon =
+            case HOUSE : this.imageIcon =
+            case SOLID : this.imageIcon
+        }
+        */
     }
 
 
 
-}
+
