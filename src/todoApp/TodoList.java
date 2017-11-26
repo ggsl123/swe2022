@@ -1,10 +1,7 @@
 package todoApp;
 
-import sun.text.resources.et.CollationData_et;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Scanner;
 
 import static java.util.Comparator.comparing;
@@ -22,9 +19,16 @@ public class TodoList {
     private ArrayList<TodoTask> tasks;
 
     Scanner in = new Scanner(System.in);
-    public TodoList(){
+    /*public TodoList(){
         System.out.print("Type Name of TodoList:");
         this.name = in.nextLine();
+        this.theme = new TodoTheme();
+        this.hideDone = false;
+        this.typeOfSort = TypeOfSort.CREATED_ORDER;
+        this.tasks = new ArrayList<>();
+    }*/
+    public TodoList(String name){
+        this.name = name;
         this.theme = new TodoTheme();
         this.hideDone = false;
         this.typeOfSort = TypeOfSort.CREATED_ORDER;
@@ -48,8 +52,7 @@ public class TodoList {
         this.sortTask();
     }
 
-    public void addTask(){
-        TodoTask newTask = new TodoTask();
+    public void addTask(TodoTask newTask){
         this.tasks.add(newTask);
         this.sortTask();
     }
@@ -87,17 +90,37 @@ public class TodoList {
             }
         }
     }
+    public void delTask(TodoTask todoTask){
+        this.tasks.remove(todoTask);
+    }
 
     public String getName(){
         return this.name;
     }
-    public void getTasks(){
+    public int getNumberOfTask(){
+        return this.tasks.size();
+    }
+    public void printTasks(){
         this.sortTask();
         if (tasks.size()==0) {
             System.out.println("Task is empty");
         }else for (TodoTask task : tasks)
             if (this.hideDone && task.getDone()) continue;
-            else System.out.println(task.getName());
+            else {
+                String check = "-";
+                if(task.getDone()) check ="o";
+                String what = "[" +check + "] "+ task.getName() + " ";
+                if(task.getDate() != null) {
+                    what = what +","+ task.getDate().toString();
+                }
+                if(task.getAlarm() != null) {
+                    what = what + "," + task.getAlarm().toString();
+                }
+                System.out.println(what);
+            }
+    }
+    public ArrayList<TodoTask> getTasks(){
+        return this.tasks;
     }
 
     /*public void exportTask(){
@@ -126,136 +149,4 @@ public class TodoList {
 
         }*/
 
-    public class TodoTask {
-        private String name;
-        private boolean done;
-        private final Date created;
-        private Date date;
-        private Date alarm;
-
-        Scanner in = new Scanner(System.in);
-        public TodoTask() {
-            System.out.print("Type Name of TodoTask:");
-            String what = in.nextLine();
-            this.name = what;
-            this.done = false;
-            this.created = new Date();
-
-        }
-        public void del(){
-            TodoList.this.tasks.remove(this);
-        }
-
-        public void setName() {
-            System.out.print("Type Name of TodoTask:");
-            String what = in.nextLine();
-            this.name = what;
-        }
-        public void setDate() {
-            System.out.print("1. Today");
-            System.out.print("2. Tomorrow");
-            System.out.print("3. Next Week");
-            System.out.print("4. Select Date");
-            System.out.print("Type number of setting type: ");
-            int what = in.nextInt();
-
-            Date now = new Date();
-            switch (what) {
-                case 1:
-                    ;
-                case 2: {
-                    now.setDate(now.getDate() + 1);
-                }
-                case 3: {
-                    now.setDate(now.getDate() + 7);
-                }
-                case 4: {
-                    now = setSpecificDate(false);
-                }
-            }
-            this.date = now;
-        }
-        public void setAlarm() {
-            System.out.print("1. Today Later");
-            System.out.print("2. Tomorrow");
-            System.out.print("3. Next Week");
-            System.out.print("4. Select Date and Time");
-            System.out.print("Type number of setting type: ");
-            int what = in.nextInt();
-
-            Date now = new Date();
-            switch (what) {
-                case 1: {
-                    now.setHours(now.getHours() + 3);
-                    now.setMinutes(0);
-                    now.setSeconds(0);
-                }
-                case 2: {
-                    now.setDate(now.getDate() + 1);
-                    now.setHours(9);
-                    now.setMinutes(0);
-                    now.setSeconds(0);
-                }
-                case 3: {
-                    now.setDate(now.getDate() + 7);
-                    now.setHours(9);
-                    now.setMinutes(0);
-                    now.setSeconds(0);
-                }
-                case 4: {
-                    now = setSpecificDate(true);
-                }
-            }
-            this.date = now;
-        }
-
-        public void checkDone() {
-            this.done = !this.done;
-        }
-        public boolean isAlarm(){ //isAlarm method가 매분 실행된다는 가정
-            Date now = new Date();
-            if (this.alarm == null){return false;}
-            if (this.alarm.getYear() != now.getYear()){return false;}
-            if (this.alarm.getMonth() != now.getMonth()){return false;}
-            if (this.alarm.getDate() != now.getDate()){return false;}
-            if (this.alarm.getHours() != now.getHours()){return false;}
-            if (this.alarm.getMinutes() != now.getMinutes()){return false;}
-            return true;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-        public Date getDate() {
-            return this.date;
-        }
-        public Date getCreated(){return this.created;}
-        public boolean getDone(){return this.done;}
-
-        public Date setSpecificDate(Boolean time) {
-            Date d = new Date();
-            System.out.print("Type year: ");
-            int year = in.nextInt();
-            System.out.print("Type month: ");
-            int month = in.nextInt();
-            System.out.print("Type date: ");
-            int date = in.nextInt();
-            d.setYear(year);
-            d.setMonth(month);
-            d.setDate(date);
-
-            if (time == false) {
-                return d;
-            } else {
-                System.out.print("Type Hours: ");
-                int hours = in.nextInt();
-                System.out.print("Type Minutes: ");
-                int min = in.nextInt();
-                d.setHours(hours);
-                d.setMinutes(min);
-                d.setSeconds(0);
-                return d;
-            }
-        }
-    }
 }
