@@ -2,14 +2,14 @@ package todoApp;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
+import java.io.Serializable;
 
-public class TodoTheme {
-    public enum ThemeColor {BLUE, PINK, PURPLE, GREEN, SKY};
-    public enum ThemeImage {MOUNTAIN, TOWER, BUS, PLANE, HOUSE, SOLID}
+public class TodoTheme implements Serializable {
+    public enum ThemeColor implements Serializable {BLUE, PINK, PURPLE, GREEN, SKY};
+    public enum ThemeImage implements Serializable {MOUNTAIN, TOWER, BUS, PLANE, HOUSE, SOLID}
 
-    private Color color;
-    private ImageIcon imageIcon;
+    private transient Color color;
+    private transient ImageIcon imageIcon;
 
     public TodoTheme(){
         this.setColor(ThemeColor.BLUE);

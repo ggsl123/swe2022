@@ -1,5 +1,6 @@
 package todoApp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -8,8 +9,8 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 
-public class TodoList {
-    public enum TypeOfSort {NAME_ORDER,NAME_REVERSE_ORDER, DATE_ORDER, DATE_REVERSE_ORDER,
+public class TodoList implements Serializable {
+    public enum TypeOfSort implements Serializable {NAME_ORDER,NAME_REVERSE_ORDER, DATE_ORDER, DATE_REVERSE_ORDER,
         CREATED_ORDER, CREATED_REVERSE_ORDER, DONE_ORDER, DONE_REVERSE_ORDER}
 
     private String name;
@@ -18,7 +19,7 @@ public class TodoList {
     private TypeOfSort typeOfSort;
     private ArrayList<TodoTask> tasks;
 
-    Scanner in = new Scanner(System.in);
+    transient Scanner in = new Scanner(System.in);
     /*public TodoList(){
         System.out.print("Type Name of TodoList:");
         this.name = in.nextLine();

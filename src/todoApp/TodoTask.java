@@ -1,16 +1,17 @@
 package todoApp;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Scanner;
 
-public class TodoTask {
+public class TodoTask implements Serializable {
     private String name;
     private boolean done;
-    private final Date created;
-    private Date date;
-    private Date alarm;
+    private final transient Date created;
+    private transient Date date;
+    private transient Date alarm;
 
-    Scanner in = new Scanner(System.in);
+    transient Scanner in = new Scanner(System.in);
     /*public TodoTask() {
         System.out.print("Type Name of TodoTask:");
         String what = in.nextLine();
@@ -29,7 +30,7 @@ public class TodoTask {
         String what = in.nextLine();
         this.name = what;
     }
-    public enum SetDate {TODAY,TOMORROW,NEXT_WEEK,SELECT_DATE}
+    public enum SetDate implements Serializable {TODAY,TOMORROW,NEXT_WEEK,SELECT_DATE}
     public void setDate(SetDate what,int year, int month, int day) {
         Date now = new Date();
         switch (what) {
@@ -60,7 +61,7 @@ public class TodoTask {
         }
         this.date = now;
     }
-    public enum SetAlarm {TODAY_LATER, TOMORROW, NEXT_WEEK, SELECT_DATE_TIME}
+    public enum SetAlarm implements Serializable {TODAY_LATER, TOMORROW, NEXT_WEEK, SELECT_DATE_TIME}
     public void setAlarm(SetAlarm what,int year,int month, int day, int hour, int min) {
         Date now = new Date();
         switch (what) {

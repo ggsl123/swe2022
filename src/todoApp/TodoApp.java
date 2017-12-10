@@ -1,8 +1,9 @@
 package todoApp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TodoApp {
+public class TodoApp implements Serializable {
     private ArrayList<TodoList> Lists;
 
     public TodoApp(){
