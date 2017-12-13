@@ -7,9 +7,9 @@ import java.util.Scanner;
 public class TodoTask implements Serializable {
     private String name;
     private boolean done;
-    private final transient Date created;
-    private transient Date date;
-    private transient Date alarm;
+    private final Date created;
+    private Date date;
+    private Date alarm;
 
     transient Scanner in = new Scanner(System.in);
     /*public TodoTask() {

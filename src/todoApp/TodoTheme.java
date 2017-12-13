@@ -8,8 +8,8 @@ public class TodoTheme implements Serializable {
     public enum ThemeColor implements Serializable {BLUE, PINK, PURPLE, GREEN, SKY};
     public enum ThemeImage implements Serializable {MOUNTAIN, TOWER, BUS, PLANE, HOUSE, SOLID}
 
-    private transient Color color;
-    private transient ImageIcon imageIcon;
+    private Color color;
+    private ImageIcon imageIcon;
 
     public TodoTheme(){
         this.setColor(ThemeColor.BLUE);
